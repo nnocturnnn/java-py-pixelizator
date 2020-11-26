@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>One</title>
+</head>
+<body>
+<p><a href="/">Back</a></p>
+<p>{{ image }}</p>
+  <form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+  </form>
+<p></p>
+<img src="{{ image.file.url }}">
+</body>
+</html>

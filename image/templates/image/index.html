@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+<p>List of Images</p>
+  <ul>
+    {% for image in images %}
+      <li>
+          <a href="id/{{ image.id }}/">{{ image }}</a>
+      </li>
+    {% empty %}
+      <li>No Images have been added yet</li>
+    {% endfor %}
+  </ul>
+<a href="new_image/">Add a new Image</a>
+</body>
+</html>
