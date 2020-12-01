@@ -43,7 +43,7 @@ def one_image(request, image_id):
 
             
             name = "pixel" + str(image)
-            pixelSize = 40 
+            pixelSize = width - height
             im = Pillow.open('{}'.format(MEDIA_ROOT+'/'+str(image.file))) 
             pix = im.load()
             width = im.size[0]

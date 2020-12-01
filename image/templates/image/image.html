@@ -10,7 +10,8 @@
   <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Submit</button>
+  <button type="submit">Resize</button>
+  <button type="submit">Pixelize</button>
   </form>
 <p></p>
 <img src="{{ image.file.url }}">
