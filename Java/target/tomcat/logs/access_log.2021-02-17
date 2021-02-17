@@ -1,0 +1,9 @@
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:06:48 +0200] "GET /pixelizator HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:06:48 +0200] "GET /pixelizator/ HTTP/1.1" 200 2815 http-bio-8080-exec-3 614
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:06:48 +0200] "GET /pixelizator/styles.css HTTP/1.1" 200 2124 http-bio-8080-exec-4 8
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:06:48 +0200] "GET /pixelizator/script.js HTTP/1.1" 200 4469 http-bio-8080-exec-2 8
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:06:48 +0200] "GET /pixelizator/ HTTP/1.1" 200 2815 http-bio-8080-exec-6 1
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:07:21 +0200] "GET /pixelizator/ HTTP/1.1" 200 2815 http-bio-8080-exec-7 3
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:07:24 +0200] "POST /pixelizator/pix HTTP/1.1" 200 40550 http-bio-8080-exec-8 483
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:07:24 +0200] "POST /pixelizator/pix HTTP/1.1" 200 40550 http-bio-8080-exec-9 54
+0:0:0:0:0:0:0:1 - - [17/Feb/2021:15:07:27 +0200] "POST /pixelizator/pix HTTP/1.1" 200 27095 http-bio-8080-exec-10 55

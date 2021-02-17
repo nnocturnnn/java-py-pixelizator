@@ -1,0 +1,115 @@
+
+body {
+    background: url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/01073865290819.5d61d475f0072.jpg) no-repeat center top fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+     background-size: cover;
+    padding: 15px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.box_w {
+    display: none;
+}
+
+h1 {
+    color: #248f8f;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 50px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.load {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: lightblue;
+    font-size: 16px;
+    font-family: Garamond, Geneva, sans-serif;
+    text-transform: uppercase;
+    color: #248f8f;
+    font-weight: bolder;
+    outline: none;
+}
+
+.box {
+    height: 60px;
+    display: flex;
+    margin-left: 30%;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+.headers {
+    margin: 10px;
+    padding: 0;
+    color: #248f8f;
+    font-size: 20px;
+    font-weight: bold;
+    width: 180px;
+    display: inline-block;
+}
+
+.buttons {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: lightblue;
+    font-size: 16px;
+    font-family: Garamond, Geneva, sans-serif;
+    text-transform: uppercase;
+    color: #248f8f;
+    font-weight: bolder;
+    outline: none;
+}
+
+
+input[type="radio"] {
+    margin-left: 15px;
+}
+.choice {
+    width: 20%;
+}
+.info > p {
+    margin: 10px 0 0 0;
+    color: none;
+    font-size: 15px;
+}
+.download {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: lightblue;
+    font-size: 16px;
+    font-family: Garamond, Geneva, sans-serif;
+    text-transform: uppercase;
+    color: #248f8f;
+    font-weight: bolder;
+    outline: none;
+}
+
+.imgBox {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+}
+
+#inputImg,
+#resultImg {
+    display: none;
+}
+.images {
+    margin: 10px;
+    padding: 10px;
+    width: 92%;
+}
+.images img {
+    position: relative;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
