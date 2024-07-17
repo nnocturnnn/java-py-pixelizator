@@ -6,15 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('image', '0004_auto_20200906_2038'),
+        ("image", "0004_auto_20200906_2038"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ChangedImage',
+            name="ChangedImage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.ImageField(upload_to='changed')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.ImageField(upload_to="changed")),
             ],
         ),
     ]

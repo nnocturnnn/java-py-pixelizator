@@ -6,23 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('image', '0007_auto_20200907_1853'),
+        ("image", "0007_auto_20200907_1853"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='file',
-            field=models.ImageField(blank=True, height_field='height', upload_to='origin/', width_field='width'),
+            model_name="image",
+            name="file",
+            field=models.ImageField(
+                blank=True,
+                height_field="height",
+                upload_to="origin/",
+                width_field="width",
+            ),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='height',
-            field=models.PositiveIntegerField(blank=True, default='height', null=True),
+            model_name="image",
+            name="height",
+            field=models.PositiveIntegerField(blank=True, default="height", null=True),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='width',
-            field=models.PositiveIntegerField(blank=True, default='width', null=True),
+            model_name="image",
+            name="width",
+            field=models.PositiveIntegerField(blank=True, default="width", null=True),
         ),
     ]

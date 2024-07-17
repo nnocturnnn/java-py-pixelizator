@@ -1,120 +1,63 @@
-import sys
-from io import BytesIO
+from typing import Union
+
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from PIL import Image as Pillow
-import requests
-from django.core.files.base import ContentFile
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from image_size.settings import MEDIA_ROOT
-from .models import Image, ChangedImage
+
 from .forms import AddForm, ChangeForm
+from .misc import pixelate_image, resize_image, save_image_from_url
+from .models import ChangedImage, Image
 
 
-# контроллер стартовой страницы со списком всех загруженнных изображений
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     images = Image.objects.all()
-    context = {'images': images}
-    return render(request, 'image/index.html', context)
+    context = {"images": images}
+    return render(request, "image/index.html", context)
 
 
-# контроллер страницы изменения размера изображения
-def one_image(request, image_id):
-    image = Image.objects.get(id=image_id)
+def one_image(request: HttpRequest, image_id: int) -> HttpResponse:
+    image = get_object_or_404(Image, id=image_id)
     proportion = image.width / image.height
-    if request.method != 'POST':
-        form = ChangeForm()
-    else:
+    if request.method == "POST":
         form = ChangeForm(request.POST)
         if form.is_valid():
-            # получаем ширину и высоту из формы
-            width = form['width'].value()
-            height = form['height'].value()
-            # сохраняем пропорции
+            width = form.cleaned_data["width"]
+            height = form.cleaned_data["height"]
             try:
-                width, height = map(int, [width, height])
+                width = int(width) if width else int(height * proportion)
+                height = int(height) if height else int(width / proportion)
             except ValueError:
-                if height:
-                    width = proportion * int(height)
-                    width, height = map(int, [width, height])
-                elif width:
-                    height = int(width) / proportion
-                    width, height = map(int, [width, height])
+                width, height = image.width, image.height
 
-            
-            name = "pixel" + str(image)
-            pixelSize = width - height
-            im = Pillow.open('{}'.format(MEDIA_ROOT+'/'+str(image.file))) 
-            pix = im.load()
-            width = im.size[0]
-            height = im.size[1]
-            startX = 0
-            startY = 0
-            while (startX < width and startY < height):
-                deltaX = width - startX if startX + pixelSize > width else pixelSize
-                deltaY = height - startY if startY + pixelSize > height else pixelSize
-                approxListSize = deltaX * deltaY
-                allPixelsInQuadrant = []
+            pil_image = Pillow.open(image.file.path)
+            pixel_size = width - height
+            pil_image = pixelate_image(pil_image, pixel_size)
+            new_pic = resize_image(pil_image, width, height)
 
-                for x in range(startX, startX + deltaX):
-                    for y in range(startY, startY + deltaY):
-                        allPixelsInQuadrant.append(pix[x, y])
-
-                approxPixels = [sum(x) for x in zip(*allPixelsInQuadrant)]
-                approxPixels = [int(x / approxListSize) for x in approxPixels]
-
-                for x in range(startX, startX + deltaX):
-                    for y in range(startY, startY + deltaY):
-                        pix[x, y] = tuple(approxPixels)
-
-                startX += pixelSize
-
-                if startX >= width:
-                    startY = startY + pixelSize
-                    startX = 0
-
-            # меняем размер с помощью класса Image(as Pillow) from PIL
-            out = im
-            buffer = BytesIO()
-            out.save(fp=buffer, format='JPEG')
-            buffer.seek(0)
-            new_pic = InMemoryUploadedFile(buffer, 'ImageField',
-                                           name, 'image/jpeg',
-                                           sys.getsizeof(buffer), None)
-
-            # сохраняем изменное изображение
-            image = ChangedImage.objects.create(file=new_pic)
-    context = {'image': image, 'form': form}
-    return render(request, 'image/image.html', context)
-
-
-# контроллер добавления нового изображения
-def new_image(request):
-    if request.method != 'POST':
-        form = AddForm()
+            changed_image = ChangedImage.objects.create(file=new_pic)
+            context = {"image": changed_image, "form": form}
+            return render(request, "image/image.html", context)
     else:
+        form = ChangeForm()
+
+    context = {"image": image, "form": form}
+    return render(request, "image/image.html", context)
+
+
+def new_image(request: HttpRequest) -> Union[HttpResponse, HttpResponseRedirect]:
+    if request.method == "POST":
         form = AddForm(request.POST, request.FILES)
         if form.is_valid():
-
-            # проверяем какая форма была заполненна url или file
-            img_url = form.cleaned_data.get('url')
-            img_file = form.cleaned_data.get('file')
-
+            img_url = form.cleaned_data.get("url")
+            img_file = form.cleaned_data.get("file")
             if img_file:
                 image = form.save()
-                image_id = image.id
-                return HttpResponseRedirect('../id/{}'.format(image_id))
-
             elif img_url:
-                name = img_url.split('/')[-1]
-                image_content = ContentFile(requests.get(img_url).content)
-                new_pic = InMemoryUploadedFile(image_content, 'ImageField',
-                                               name, 'image/jpeg',
-                                               sys.getsizeof(image_content), None)
+                new_pic = save_image_from_url(img_url)
                 image = Image.objects.create(file=new_pic)
-                image_id = image.id
-                return HttpResponseRedirect('../id/{}'.format(image_id))
-    context = {'form': form}
-    return render(request, 'image/new_image.html', context)
+            return HttpResponseRedirect(f"../id/{image.id}")
+    else:
+        form = AddForm()
 
-
+    context = {"form": form}
+    return render(request, "image/new_image.html", context)
